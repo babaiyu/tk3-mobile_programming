@@ -1,27 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import openDatabase from "../../modules/openDatabase";
-import { useIsFocused } from "@react-navigation/native";
-
-const db = openDatabase();
+import React from "react";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import useController from "./useController";
 
 export default function ReportScreen() {
-  const isFocused = useIsFocused();
-  const [items, setItems] = useState(null);
+  const { items } = useController();
 
-  useEffect(() => {
-    if (isFocused) {
-      db.transaction((tx) => {
-        tx.executeSql("SELECT * FROM items", [], (_, { rows: { _array } }) => {
-          setItems(_array);
-        });
-      });
-    }
-  }, [isFocused]);
-
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>{JSON.stringify(items)}</Text>
+  const renderItem = ({ item }) => (
+    <View style={s.item}>
+      <Text>{item?.value}</Text>
     </View>
   );
+
+  return (
+    <SafeAreaView style={s.container}>
+      <FlatList
+        data={items}
+        keyExtractor={(item) => (item?.id ?? 0).toString()}
+        renderItem={renderItem}
+      />
+    </SafeAreaView>
+  );
 }
+
+const s = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  item: {
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    marginTop: 16,
+    borderBottomWidth: 1,
+  },
+});

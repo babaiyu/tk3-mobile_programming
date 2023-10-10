@@ -5,7 +5,7 @@ import openDatabase from "./src/modules/openDatabase";
 const db = openDatabase();
 
 export default function App() {
-  // Open database & create if table if not exist
+  // Open database & create table if not exist
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(

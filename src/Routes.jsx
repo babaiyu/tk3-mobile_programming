@@ -26,8 +26,6 @@ export default function Routes() {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "tomato",
-          tabBarInactiveTintColor: "gray",
         })}
       >
         <Tab.Screen
